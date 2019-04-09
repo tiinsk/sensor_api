@@ -1,5 +1,5 @@
 const Joi = require('joi');
-var Boom = require('Boom');
+var Boom = require('boom');
 const knex = require('../../knex/knex.js');
 
 module.exports = {
