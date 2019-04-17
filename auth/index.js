@@ -17,8 +17,6 @@ const validateJWT = async function (request, payload, h) {
 
   const valid_time = config.auth.valid_time_in_s[process.env.NODE_ENV];
 
-  console.log(Date.now() - payload.iat);
-
   if(!payload.iat || typeof payload.iat !== 'number'  || Date.now() - payload.iat > valid_time*1000) {
     return {isValid: false, credentials: null}
   }
