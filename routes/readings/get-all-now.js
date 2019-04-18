@@ -56,8 +56,8 @@ module.exports = {
     return mostRecent.map(device => {
       return {
         ...device,
-        max_temperature: minMaxByDevice[device.device].max_temperature,
-        min_temperature: minMaxByDevice[device.device].min_temperature
+        max_temperature: minMaxByDevice[device.device] ? minMaxByDevice[device.device].max_temperature : null,
+        min_temperature: minMaxByDevice[device.device] ? minMaxByDevice[device.device].min_temperature: null
       }
     });
 
