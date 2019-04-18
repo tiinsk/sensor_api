@@ -11,11 +11,11 @@
   "license": "ISC",
   "dependencies": {
     "boom": "^7.3.0",
-    "date-fns": "^1.30.1",
     "hapi": "^18.1.0",
     "hapi-jsonwebtoken": "^1.1.0",
     "joi": "^14.3.1",
     "knex": "^0.16.3",
+    "luxon": "^1.12.1",
     "pg": "^7.9.0"
   }
 }

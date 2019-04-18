@@ -1,7 +1,7 @@
 const Joi = require('joi');
 var Boom = require('boom');
 const knex = require('../../knex/knex.js');
-const dateFns = require('date-fns');
+const { DateTime } = require("luxon");
 
 module.exports = {
   method: 'GET',
@@ -15,8 +15,8 @@ module.exports = {
   },
   handler: async (request, h) => {
     const time = request.query.localTime || new Date();
-    const beginningOfDay = dateFns.startOfDay(time);
-    const endOfDay = dateFns.endOfDay(time);
+    const beginningOfDay = DateTime.fromJSDate(time).startOf('day');
+    const endOfDay = DateTime.fromJSDate(time).endOf('day');
 
     const mostRecent = await knex('reading')
       .select([

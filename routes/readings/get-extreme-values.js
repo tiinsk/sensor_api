@@ -1,7 +1,7 @@
 const Joi = require('joi');
 const Boom = require('boom');
 const knex = require('../../knex/knex.js');
-const dateFns = require('date-fns');
+const { DateTime } = require("luxon");
 
 module.exports = {
   method: 'GET',
@@ -16,11 +16,17 @@ module.exports = {
   handler: async (request, h) => {
     const time = request.query.localTime || new Date();
 
-    const beginningOfWeek = dateFns.startOfWeek(time, {weekStartsOn: 1});
-    const endOfWeek = dateFns.endOfWeek(time, {weekStartsOn: 1});
+    const beginningOfDay = DateTime.fromJSDate(time).startOf('day');
+    const endOfDay = DateTime.fromJSDate(time).endOf('day');
 
-    const beginningOfMonth = dateFns.startOfMonth(time);
-    const endOfMonth = dateFns.endOfMonth(time);
+    //Transform mo 1 -> 0 and su 7 -> 1
+    const weekday = beginningOfDay.weekday-1;
+
+    const beginningOfWeek = beginningOfDay.plus({days: -weekday});
+    const endOfWeek = endOfDay.plus({days: -weekday});
+
+    const beginningOfMonth = DateTime.fromJSDate(time).startOf('month');
+    const endOfMonth = DateTime.fromJSDate(time).endOf('month');
 
     const minMaxWeek = await knex('reading')
       .select([
