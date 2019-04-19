@@ -16,7 +16,8 @@ module.exports = {
         limit: Joi.number().integer().min(1).max(100).default(100),
         offset: Joi.number().integer().min(0).default(0),
         start: Joi.date().optional(),
-        end: Joi.date().optional()
+        end: Joi.date().optional(),
+        include: Joi.array().items(Joi.string().valid('temperature', 'humidity', 'pressure', 'lux', 'battery')).single().required()
       }
     }
   },
@@ -43,12 +44,8 @@ module.exports = {
 
       const results = await query
         .select([
+          ...request.query.include,
           'id',
-          'temperature',
-          'humidity',
-          'pressure',
-          'lux',
-          'battery',
           'created_at'
         ])
         .orderBy('created_at')

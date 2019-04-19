@@ -23,7 +23,7 @@ module.exports = {
     const weekday = beginningOfDay.weekday-1;
 
     const beginningOfWeek = beginningOfDay.plus({days: -weekday});
-    const endOfWeek = endOfDay.plus({days: -weekday});
+    const endOfWeek = endOfDay.plus({days: -weekday+6});
 
     const beginningOfMonth = DateTime.fromJSDate(time).startOf('month');
     const endOfMonth = DateTime.fromJSDate(time).endOf('month');
