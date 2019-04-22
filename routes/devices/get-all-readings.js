@@ -13,7 +13,7 @@ module.exports = {
           .required()
       },
       query: {
-        limit: Joi.number().integer().min(1).max(100).default(100),
+        limit: Joi.number().integer().min(1).max(500).default(100),
         offset: Joi.number().integer().min(0).default(0),
         start: Joi.date().optional(),
         end: Joi.date().optional(),
