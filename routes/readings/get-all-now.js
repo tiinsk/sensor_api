@@ -20,15 +20,18 @@ module.exports = {
 
     const mostRecent = await knex('reading')
       .select([
-        'id',
-        'temperature',
-        'humidity',
-        'pressure',
-        'lux',
-        'battery',
-        'created_at',
-        'reading.device'
+        'reading.id',
+        'reading.temperature',
+        'reading.humidity',
+        'reading.pressure',
+        'reading.lux',
+        'reading.battery',
+        'reading.created_at',
+        'reading.device',
+        'device.name',
+        'device.location_type'
       ])
+      .leftJoin('device', 'reading.device', 'device.id')
       .innerJoin(function() {
           this.from('reading').select([
             'device',
