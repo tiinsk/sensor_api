@@ -81,7 +81,8 @@ const getAllDeviceExtremeReadings = async (localTime, deviceId) => {
     if(!device) {
       return Boom.notFound(`Device with id ${deviceId} not found`);
     }
-    return (await getAll(localTime, trx, deviceId))[0];
+    const data = await getAll(localTime, trx, deviceId);
+    return data.length > 0 ? data[0]: {};
   });
 };
 
