@@ -18,7 +18,8 @@ const getAll = async (localTime, trx, device) => {
       'reading.created_at',
       'reading.device',
       'device.name',
-      'device.location_type'
+      'device.location_type',
+      'device.sensor_info'
     ])
     .leftJoin('device', 'reading.device', 'device.id')
     .innerJoin(function () {
