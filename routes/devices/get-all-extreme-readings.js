@@ -12,11 +12,11 @@ module.exports = {
           .required()
       },
       query: {
-        localTime: Joi.date().optional()
+        localTimeZone: Joi.number().min(-11).max(14).optional()
       }
     }
   },
   handler: (request, h) => {
-    return getAllDeviceExtremeReadings(request.query.localTime, request.params.id);
+    return getAllDeviceExtremeReadings(request.query.localTimeZone, request.params.id);
   }
 };

@@ -8,11 +8,11 @@ module.exports = {
   options: {
     validate: {
       query: {
-        localTime: Joi.date().optional()
+        localTimeZone: Joi.number().min(-11).max(14).optional()
       }
     }
   },
   handler: (request, h) => {
-    return getAllExtremeReadings(request.query.localTime);
+    return getAllExtremeReadings(request.query.localTimeZone);
   }
 };

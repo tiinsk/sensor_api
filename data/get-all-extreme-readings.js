@@ -2,11 +2,12 @@ const knex = require('../knex/knex.js');
 var Boom = require('boom');
 const { DateTime } = require("luxon");
 
-const getAll = async (localTime, trx, device) => {
-  const time = localTime || new Date();
+const getAll = async (localTimeZone, trx, device) => {
+  const zone = (localTimeZone || 0)*60;
+  const currentDate = new Date();
 
-  const beginningOfDay = DateTime.fromJSDate(time).startOf('day');
-  const endOfDay = DateTime.fromJSDate(time).endOf('day');
+  const beginningOfDay = DateTime.fromJSDate(currentDate, {zone: zone}).startOf('day');
+  const endOfDay = DateTime.fromJSDate(currentDate, {zone: zone}).endOf('day');
 
   //Transform mo 1 -> 0 and su 7 -> 1
   const weekday = beginningOfDay.weekday-1;
@@ -14,8 +15,8 @@ const getAll = async (localTime, trx, device) => {
   const beginningOfWeek = beginningOfDay.plus({days: -weekday});
   const endOfWeek = endOfDay.plus({days: -weekday+6});
 
-  const beginningOfMonth = DateTime.fromJSDate(time).startOf('month');
-  const endOfMonth = DateTime.fromJSDate(time).endOf('month');
+  const beginningOfMonth = DateTime.fromJSDate(currentDate, {zone: zone}).startOf('month');
+  const endOfMonth = DateTime.fromJSDate(currentDate, {zone: zone}).endOf('month');
 
   const minMaxWeekQuery = trx('reading')
     .select([
@@ -68,20 +69,20 @@ const getAll = async (localTime, trx, device) => {
   });
 };
 
-const getAllExtremeReadings = (localTime) => {
+const getAllExtremeReadings = (localTimeZone) => {
   return knex.transaction(async trx => {
-    return getAll(localTime, trx);
+    return getAll(localTimeZone, trx);
   });
 };
 
-const getAllDeviceExtremeReadings = async (localTime, deviceId) => {
+const getAllDeviceExtremeReadings = async (localTimeZone, deviceId) => {
   return knex.transaction(async trx => {
     const device = await trx('device').where('id', deviceId).first();
 
     if(!device) {
       return Boom.notFound(`Device with id ${deviceId} not found`);
     }
-    const data = await getAll(localTime, trx, deviceId);
+    const data = await getAll(localTimeZone, trx, deviceId);
     return data.length > 0 ? data[0]: {};
   });
 };
