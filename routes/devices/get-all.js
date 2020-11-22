@@ -13,7 +13,7 @@ module.exports = {
     }
   },
   handler: async (request, h) => {
-    const query =  knex('device');
+    const query =  knex('device').where({disabled: false});
 
     const totResultCount = await query.clone().count('id');
 
