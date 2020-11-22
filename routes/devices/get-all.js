@@ -18,7 +18,7 @@ module.exports = {
     const totResultCount = await query.clone().count('id');
 
     const results = await query
-      .orderBy('id')
+      .orderBy('order')
       .limit(request.query.limit).offset(request.query.offset);
 
     return {
