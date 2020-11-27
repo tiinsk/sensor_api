@@ -11,6 +11,22 @@ payload = {
 const validateJWT = async function (request, payload, h) {
   const credentials = payload || {};
 
+  if(payload.username) {
+    const user_valid_time = config.auth.user_valid_time_in_s[process.env.NODE_ENV];
+
+    if(!payload.iat || typeof payload.iat !== 'number' || Date.now() - payload.iat > user_valid_time*1000) {
+      return {isValid: false, credentials: null};
+    }
+    const user = await knex('user').where('username', payload.username).first();
+    if(!user || user.disabled) {
+      return {isValid: false, credentials: null};
+    }
+    return {
+      isValid: true,
+      credentials
+    }
+  }
+
   if(!payload.api_key) {
     return {isValid: false, credentials: null}
   }
@@ -22,7 +38,6 @@ const validateJWT = async function (request, payload, h) {
   }
 
   const auth = await knex('auth').where('api_key', payload.api_key).first();
-
 
   if(!auth) {
     return {isValid: false, credentials: null}

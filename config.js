@@ -7,7 +7,11 @@ module.exports = {
     valid_time_in_s: {
       development: 5.184e+6, //60 days
       production: 120 //120 s = 2 min
-    }
+    },
+    user_valid_time_in_s: {
+      development: 5.184e+6, //60 days
+      production: 5.184e+6, //60 days
+    },
   },
   hapi: {
     development: {
