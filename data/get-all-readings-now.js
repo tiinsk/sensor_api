@@ -20,6 +20,7 @@ const getAll = async (localTimeZone, trx, device) => {
       'reading.created_at',
       'reading.device',
       'device.name',
+      'device.disabled',
       'device.location_type',
       'device.sensor_info'
     ])
@@ -33,7 +34,7 @@ const getAll = async (localTimeZone, trx, device) => {
         .as('max_reading')
     }, function () {
       this.on('max_reading.device', '=', 'reading.device').andOn('max_reading.max_created_at', '=', 'reading.created_at')
-    });
+    }).where('device.disabled', false);
 
   const minMaxQuery = trx('reading')
     .select([
