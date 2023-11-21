@@ -5,6 +5,5 @@
 //   passwordHash: 'some-hashed-password'
 // }
 
-const {saltHashPassword} = require('./auth/hash-password');
-console.log(saltHashPassword(process.argv[2]))
-
+const { saltHashPassword } = require('./auth/hash-password');
+console.log(saltHashPassword(process.argv[2]));

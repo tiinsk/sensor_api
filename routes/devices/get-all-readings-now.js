@@ -7,16 +7,17 @@ module.exports = {
   options: {
     validate: {
       params: {
-        id: Joi
-          .string()
-          .required()
+        id: Joi.string().required(),
       },
       query: {
-        localTimeZone: Joi.number().min(-11).max(14).optional()
-      }
-    }
+        localTimeZone: Joi.number().min(-11).max(14).optional(),
+      },
+    },
   },
   handler: (request, h) => {
-    return getAllDeviceReadingsNow(request.query.localTimeZone, request.params.id);
-  }
+    return getAllDeviceReadingsNow(
+      request.query.localTimeZone,
+      request.params.id
+    );
+  },
 };

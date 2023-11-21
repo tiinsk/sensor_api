@@ -8,24 +8,25 @@ module.exports = {
     validate: {
       query: {
         limit: Joi.number().integer().min(1).max(100).default(100),
-        offset: Joi.number().integer().min(0).max(100).default(0)
-      }
-    }
+        offset: Joi.number().integer().min(0).max(100).default(0),
+      },
+    },
   },
   handler: async (request, h) => {
-    const query =  knex('device').where({disabled: false});
+    const query = knex('device').where({ disabled: false });
 
     const totResultCount = await query.clone().count('id');
 
     const results = await query
       .orderBy('order')
-      .limit(request.query.limit).offset(request.query.offset);
+      .limit(request.query.limit)
+      .offset(request.query.offset);
 
     return {
       count: results.length,
       totCount: totResultCount[0]['count'],
       limit: request.query.limit,
-      values: results
+      values: results,
     };
-  }
+  },
 };

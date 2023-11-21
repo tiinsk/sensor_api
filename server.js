@@ -11,15 +11,14 @@ const auth = require('./auth');
 const server = Hapi.server(config.hapi[process.env.NODE_ENV]);
 
 const init = async () => {
-
   await server.register(HapiJWT.plugin);
 
   server.auth.strategy('jwt', 'hapi-jsonwebtoken', {
     secretOrPrivateKey: config.auth.secret[process.env.NODE_ENV],
-    getToken: (request) => {
+    getToken: request => {
       return request.headers.authorization;
     },
-    validate: auth.validateJWT
+    validate: auth.validateJWT,
   });
 
   server.auth.default('jwt');
@@ -30,8 +29,7 @@ const init = async () => {
   console.log(`Server running at: ${server.info.uri}`);
 };
 
-process.on('unhandledRejection', (err) => {
-
+process.on('unhandledRejection', err => {
   console.log(err);
   process.exit(1);
 });

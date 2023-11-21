@@ -13,20 +13,22 @@ module.exports = {
       payload: {
         username: Joi.string().required(),
         password: Joi.string().required(),
-      }
-    }
+      },
+    },
   },
   handler: async (request, h) => {
     return knex.transaction(async trx => {
-      const user = await trx('user').where('username', request.payload.username).first();
+      const user = await trx('user')
+        .where('username', request.payload.username)
+        .first();
 
-      if(!user) {
+      if (!user) {
         return Boom.unauthorized('Unauthorized user');
       }
 
-      const {passwordHash} = sha512(request.payload.password, user.salt);
+      const { passwordHash } = sha512(request.payload.password, user.salt);
 
-      if(user.password !== passwordHash || user.disabled) {
+      if (user.password !== passwordHash || user.disabled) {
         return Boom.unauthorized('Unauthorized user');
       }
 
@@ -35,5 +37,5 @@ module.exports = {
         username: user.username,
       });
     });
-  }
+  },
 };

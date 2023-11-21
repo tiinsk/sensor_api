@@ -1,4 +1,4 @@
-exports.up = async function(knex, Promise) {
+exports.up = async function (knex, Promise) {
   await knex.schema.createTable('user', function (table) {
     table.string('username').primary().unique().notNullable();
     table.string('password').notNullable();
@@ -7,6 +7,6 @@ exports.up = async function(knex, Promise) {
   });
 };
 
-exports.down = async function(knex, Promise) {
+exports.down = async function (knex, Promise) {
   await knex.schema.dropTableIfExists('user');
 };
