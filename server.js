@@ -1,7 +1,9 @@
 'use strict';
 
-const Hapi = require('hapi');
+const Hapi = require('@hapi/hapi');
 const HapiJWT = require('hapi-jsonwebtoken');
+const Joi = require('joi');
+
 const routes = require('./routes');
 const config = require('./config');
 const auth = require('./auth');
@@ -21,7 +23,7 @@ const init = async () => {
   });
 
   server.auth.default('jwt');
-
+  server.validator(Joi);
   server.route(routes);
 
   await server.start();
