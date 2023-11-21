@@ -1,10 +1,7 @@
-const Joi = require('joi');
-const Boom = require('boom');
-const knex = require('../../knex/knex.js');
-const { DateTime } = require('luxon');
-const { getAllReadingsNow } = require('../../data/get-all-readings-now');
+import Joi from 'joi';
+import { getAllReadingsNow } from '../../data/get-all-readings-now';
 
-module.exports = {
+export default {
   method: 'GET',
   path: '/api/readings/now',
   options: {

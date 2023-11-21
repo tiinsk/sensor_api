@@ -1,12 +1,10 @@
-'use strict';
+import Hapi from '@hapi/hapi';
+import HapiJWT from 'hapi-jsonwebtoken';
+import Joi from 'joi';
 
-const Hapi = require('@hapi/hapi');
-const HapiJWT = require('hapi-jsonwebtoken');
-const Joi = require('joi');
-
-const routes = require('./routes');
-const config = require('./config');
-const auth = require('./auth');
+import routes from './routes';
+import { validateJWT } from './auth';
+import config from './config';
 
 const server = Hapi.server(config.hapi[process.env.NODE_ENV]);
 
@@ -18,7 +16,7 @@ const init = async () => {
     getToken: request => {
       return request.headers.authorization;
     },
-    validate: auth.validateJWT,
+    validate: validateJWT,
   });
 
   server.auth.default('jwt');

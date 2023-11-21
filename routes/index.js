@@ -1,16 +1,16 @@
-const fs = require('fs');
+import fs from 'fs';
 
-var getAllFilesInSubDirs = function (dir, filelist) {
+const getAllFilesInSubDirs = function (dir, filelist) {
   fs.readdirSync(dir)
-    .filter(file => file !== 'index.js')
+    .filter(file => file !== 'index.js' && !file.includes('.js.map'))
     .forEach(file => {
       if (fs.statSync(`${dir}/${file}`).isDirectory()) {
         filelist = getAllFilesInSubDirs(`${dir}/${file}`, filelist);
       } else {
-        filelist.push(require(`${dir}/${file}`));
+        filelist.push(require(`${dir}/${file}`).default);
       }
     });
   return filelist;
 };
 
-module.exports = getAllFilesInSubDirs(__dirname, []);
+export default getAllFilesInSubDirs(__dirname, []);

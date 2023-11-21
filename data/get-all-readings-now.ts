@@ -1,17 +1,15 @@
-const knex = require('../knex/knex.js');
-var Boom = require('boom');
-const { DateTime } = require('luxon');
+import Boom from 'boom';
+import { DateTime } from 'luxon';
+import knex from '../knex/knex';
 
-const getAll = async (localTimeZone, trx, device) => {
+const getAll = async (localTimeZone, trx, device = undefined) => {
   const zone = (localTimeZone || 0) * 60;
   const currentDate = new Date();
 
   const beginningOfDay = DateTime.fromJSDate(currentDate, {
-    zone: zone,
+    zone,
   }).startOf('day');
-  const endOfDay = DateTime.fromJSDate(currentDate, { zone: zone }).endOf(
-    'day'
-  );
+  const endOfDay = DateTime.fromJSDate(currentDate, { zone }).endOf('day');
 
   const mostRecentQuery = trx('reading')
     .select([
@@ -81,13 +79,13 @@ const getAll = async (localTimeZone, trx, device) => {
   });
 };
 
-const getAllReadingsNow = localTimeZone => {
+export const getAllReadingsNow = localTimeZone => {
   return knex.transaction(async trx => {
     return getAll(localTimeZone, trx);
   });
 };
 
-const getAllDeviceReadingsNow = async (localTimeZone, deviceId) => {
+export const getAllDeviceReadingsNow = async (localTimeZone, deviceId) => {
   return knex.transaction(async trx => {
     const device = await trx('device').where('id', deviceId).first();
 
@@ -97,9 +95,4 @@ const getAllDeviceReadingsNow = async (localTimeZone, deviceId) => {
     const data = await getAll(localTimeZone, trx, deviceId);
     return data.length > 0 ? data[0] : {};
   });
-};
-
-module.exports = {
-  getAllReadingsNow,
-  getAllDeviceReadingsNow,
 };

@@ -1,5 +1,6 @@
-const knex = require('../knex/knex');
-const config = require('../config');
+import knex from '../knex/knex';
+
+import config from '../config';
 
 /*
 payload = {
@@ -8,7 +9,7 @@ payload = {
   iat: "issued-at-timestamp"
 }
 */
-const validateJWT = async function (request, payload, h) {
+export const validateJWT = async function (request, payload, h) {
   const credentials = payload || {};
 
   if (payload.username) {
@@ -60,8 +61,4 @@ const validateJWT = async function (request, payload, h) {
     isValid: true,
     credentials,
   };
-};
-
-module.exports = {
-  validateJWT,
 };

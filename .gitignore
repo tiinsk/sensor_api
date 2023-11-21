@@ -3,3 +3,4 @@ public/
 *.log
 .idea
 .vscode
+dist/*

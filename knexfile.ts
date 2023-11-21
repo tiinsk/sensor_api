@@ -1,6 +1,7 @@
-const config = require('./config');
+import path from 'path';
+import config from './config';
 
-module.exports = {
+export default {
   development: {
     client: 'postgresql',
     connection: config.database.development,
@@ -9,10 +10,10 @@ module.exports = {
       max: 10,
     },
     migrations: {
-      directory: __dirname + '/knex/migrations',
+      directory: path.join(__dirname, '/knex/migrations'),
     },
     seeds: {
-      directory: __dirname + '/knex/seeds',
+      directory: path.join(__dirname, '/knex/seeds'),
     },
   },
   production: {
@@ -24,10 +25,10 @@ module.exports = {
     },
     migrations: {
       tableName: 'knex_migrations',
-      directory: __dirname + '/knex/migrations',
+      directory: path.join(__dirname, '/knex/migrations'),
     },
     seeds: {
-      directory: __dirname + '/knex/seeds',
+      directory: path.join(__dirname, '/knex/seeds'),
     },
   },
 };

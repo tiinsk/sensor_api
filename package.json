@@ -2,10 +2,11 @@
   "name": "api",
   "version": "1.0.0",
   "description": "Sensor API",
-  "main": "server.js",
+  "main": "server.ts",
   "scripts": {
-    "start": "NODE_ENV=development node server.js",
-    "start:production": "NODE_ENV=production node server.js"
+    "start:production": "NODE_ENV=production node ./dist/server.js",
+    "start": "./node_modules/nodemon/bin/nodemon.js -e ts  --exec \"npm run compile\"",
+    "compile": "tsc && NODE_ENV=development node ./dist/server.js"
   },
   "author": "Tiina Koskiranta",
   "license": "ISC",
@@ -19,11 +20,15 @@
     "pg": "^8.11.3"
   },
   "devDependencies": {
+    "@types/node": "^20.9.3",
     "eslint": "^8.54.0",
     "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.1.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-prettier": "^5.0.1",
-    "prettier": "^3.1.0"
+    "nodemon": "^3.0.1",
+    "prettier": "^3.1.0",
+    "typescript": "^5.3.2"
   }
 }

@@ -1,10 +1,7 @@
-const {
-  getAllExtremeReadings,
-} = require('../../data/get-all-extreme-readings');
+import Joi from 'joi';
+import { getAllExtremeReadings } from '../../data/get-all-extreme-readings';
 
-const Joi = require('joi');
-
-module.exports = {
+export default {
   method: 'GET',
   path: '/api/readings/extremes',
   options: {

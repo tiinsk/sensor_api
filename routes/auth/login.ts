@@ -1,10 +1,10 @@
-const Joi = require('joi');
-var Boom = require('boom');
+import Joi from 'joi';
+import Boom from 'boom';
 
-const knex = require('../../knex/knex.js');
-const { sha512 } = require('../../auth/hash-password');
+import knex from '../../knex/knex';
+import { sha512 } from '../../auth/hash-password';
 
-module.exports = {
+export default {
   method: 'POST',
   path: '/api/login',
   options: {

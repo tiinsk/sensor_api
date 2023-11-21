@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   auth: {
     secret: {
       development: 'bananabanana',
@@ -15,9 +15,12 @@ module.exports = {
   },
   hapi: {
     development: {
-      port: 3000,
+      port: 3030,
       host: 'localhost',
-      debug: { request: ['error'] }
+      debug: { request: ['*'], log: ['*'] },
+      routes: {
+        cors: false,
+      },
     },
     production: {
       port: 3000,
@@ -33,9 +36,10 @@ module.exports = {
     },
     development: {
       host: '127.0.0.1',
+      port: 5432,
       database: 'sensordata',
-      user: 'sensor_api',
-      password: 'apiapi'
+      user: 'tiina.koskiranta',
+      //password: '',
     },
   },
 };

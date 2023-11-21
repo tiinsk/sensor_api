@@ -6,4 +6,5 @@
 // }
 
 const { saltHashPassword } = require('./auth/hash-password');
+
 console.log(saltHashPassword(process.argv[2]));

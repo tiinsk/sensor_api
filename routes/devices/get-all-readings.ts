@@ -1,8 +1,8 @@
-const Joi = require('joi');
-var Boom = require('boom');
-const knex = require('../../knex/knex.js');
+import Joi from 'joi';
+import Boom from 'boom';
+import knex from '../../knex/knex';
 
-module.exports = {
+export default {
   method: 'GET',
   path: '/api/devices/{id}/readings',
   options: {

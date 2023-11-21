@@ -1,7 +1,7 @@
-const Joi = require('joi');
-const knex = require('../../knex/knex.js');
+import Joi from 'joi';
+import knex from '../../knex/knex.js';
 
-module.exports = {
+export default {
   method: 'GET',
   path: '/api/devices',
   options: {

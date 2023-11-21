@@ -1,7 +1,7 @@
-const Joi = require('joi');
-const { getAllDeviceReadingsNow } = require('../../data/get-all-readings-now');
+import Joi from 'joi';
+import { getAllDeviceReadingsNow } from '../../data/get-all-readings-now';
 
-module.exports = {
+export default {
   method: 'GET',
   path: '/api/devices/{id}/readings/now',
   options: {
