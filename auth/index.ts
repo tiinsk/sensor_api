@@ -53,10 +53,6 @@ export const validateJWT = async function (request, payload, h) {
     return { isValid: false, credentials: null };
   }
 
-  if ((payload.device || auth.device) && payload.device !== auth.device) {
-    return { isValid: false, credentials: null };
-  }
-
   return {
     isValid: true,
     credentials,
