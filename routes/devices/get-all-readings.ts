@@ -14,7 +14,9 @@ export default {
         type: Joi.string()
           .valid('temperature', 'humidity', 'pressure')
           .required(),
-        level: Joi.string().valid('minute', 'day', 'week', 'month').required(),
+        level: Joi.string()
+          .valid('10 minutes', '30 minute', 'day', 'week', 'month')
+          .required(),
       },
     },
   },

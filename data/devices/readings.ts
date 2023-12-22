@@ -6,7 +6,7 @@ import { Knex } from 'knex';
 
 export type ReadingType = 'temperature' | 'humidity' | 'pressure';
 export type TimePeriod = 'day' | 'week' | 'month' | 'year';
-export type TimeLevel = 'minute' | 'day' | 'week' | 'month';
+export type TimeLevel = '10 minutes' | '30 minutes' | 'day' | 'week' | 'month';
 
 const dataMapper = (deviceIds, results) => {
   return deviceIds.map((deviceId, i) => {
@@ -36,18 +36,27 @@ const getAll = (
     deviceId: string;
   }
 ) => {
+  const rawTrunc = trx.raw(
+    `date_trunc('${params.level}', created_at, 'Europe/Helsinki') as time`
+  );
+
+  const rawBin = trx.raw(
+    `date_bin('30 minutes', created_at, '2000-01-01') as time`
+  );
+
+  const selector = ['30 minutes', '10 minutes'].includes(params.level)
+    ? rawBin
+    : rawTrunc;
+
   const query = trx('reading')
-    .select([
-      trx.raw(
-        `date_trunc('${params.level}', created_at, 'Europe/Helsinki') as time`
-      ),
-    ])
+    .select([selector])
     .avg(params.type)
     .where('created_at', '>=', params.startTime)
     .andWhere('created_at', '<=', params.endTime)
     .max(`${params.type} as max`)
     .min(`${params.type} as min`)
-    .groupBy('time');
+    .groupBy('time')
+    .orderBy('time', 'asc');
 
   if (params.deviceId) {
     query.where('device', params.deviceId);
