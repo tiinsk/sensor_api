@@ -1,21 +1,35 @@
 module.exports = {
-  parserOptions: {
-    project: './tsconfig.json',
-  },
   env: {
-    node: true,
-    es6: true,
+    browser: true,
+    es2021: true,
   },
   extends: [
-    'airbnb',
-    'airbnb-typescript/base',
-    'prettier',
     'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'prettier',
     'plugin:prettier/recommended',
   ],
-  plugins: ['prettier'],
+  overrides: [
+    {
+      env: {
+        node: true,
+      },
+      files: ['.eslintrc.{js,cjs}'],
+      parserOptions: {
+        sourceType: 'script',
+      },
+    },
+  ],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: './tsconfig.json',
+  },
+  plugins: ['@typescript-eslint', 'prettier'],
   rules: {
-    'no-console': 'error',
-    'import/prefer-default-export': 'off',
+    'prettier/prettier': 'error',
+    'arrow-body-style': 'off',
+    'prefer-arrow-callback': 'off',
   },
 };

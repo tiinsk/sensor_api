@@ -8,6 +8,8 @@
     "moduleResolution": "node",
     "esModuleInterop": true
   },
-  "include": ["./**/*", ".eslintrc.js"],
+  "include": ["./**/*",
+    ".eslintrc.js"
+  ],
   "exclude": ["node_modules", "dist"]
 }
