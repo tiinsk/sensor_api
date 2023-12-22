@@ -54,6 +54,12 @@ export default {
           'created_at',
         ]);
 
+      if (result[0].id) {
+        await trx('device')
+          .where('id', request.params.id)
+          .update({ latest_reading: result[0].id });
+      }
+
       return result[0];
     });
   },
