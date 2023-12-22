@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   auth: {
     secret: {
       development: 'bananabanana',
@@ -15,8 +15,8 @@ export default {
   },
   hapi: {
     development: {
-      port: 3030,
-      host: 'localhost',
+      port: 8000,
+      //host: 'localhost',
       debug: { request: ['*'], log: ['*'] },
       routes: {
         cors: false,
