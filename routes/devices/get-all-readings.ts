@@ -15,7 +15,7 @@ export default {
           .valid('temperature', 'humidity', 'pressure')
           .required(),
         level: Joi.string()
-          .valid('10 minutes', '30 minute', 'day', 'week', 'month')
+          .valid('10 minutes', '30 minutes', 'day', 'week', 'month')
           .required(),
       },
     },
