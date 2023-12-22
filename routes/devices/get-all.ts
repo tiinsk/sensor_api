@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import knex from '../../knex/knex.js';
+import { ArrayRequestParams } from '../../types';
 
 export default {
   method: 'GET',
@@ -12,7 +13,7 @@ export default {
       },
     },
   },
-  handler: async (request, h) => {
+  handler: async (request: { query: ArrayRequestParams }) => {
     const query = knex('device').where({ disabled: false });
 
     const totResultCount = await query.clone().count('id');
