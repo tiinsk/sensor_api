@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import { ArrayRequestParams } from '../../types';
-import { getAllDevices } from '../../data';
+import { getAllDevices } from '../../data/devices';
 
 export default {
   method: 'GET',
