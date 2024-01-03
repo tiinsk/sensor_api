@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import Boom from 'boom';
-import knex from '../../knex/knex.js';
+import { addDeviceReading } from '../../data/devices/readings';
 
 export default {
   method: 'POST',
@@ -16,51 +16,18 @@ export default {
         pressure: Joi.number(),
         lux: Joi.number(),
         battery: Joi.number(),
-        created_at: Joi.date().optional(),
       },
     },
   },
-  handler: (request) => {
+  handler: request => {
     if (request.auth.credentials.device !== request.params.id) {
       return Boom.conflict(
         `Device can add records to only itself (JWT device (${request.auth.credentials.device}) does not match parameter id (${request.params.id}))`
       );
     }
-
-    return knex.transaction(async trx => {
-      const device = await trx('device').where('id', request.params.id).first();
-
-      if (!device) {
-        return Boom.notFound(`Device with id ${request.params.id} not found`);
-      }
-
-      const result = await trx('reading')
-        .insert({
-          device: request.params.id,
-          temperature: request.payload.temperature,
-          humidity: request.payload.humidity,
-          pressure: request.payload.pressure,
-          lux: request.payload.lux,
-          battery: request.payload.battery,
-          created_at: request.payload.created_at,
-        })
-        .returning([
-          'id',
-          'temperature',
-          'humidity',
-          'pressure',
-          'lux',
-          'battery',
-          'created_at',
-        ]);
-
-      if (result[0].id) {
-        await trx('device')
-          .where('id', request.params.id)
-          .update({ latest_reading: result[0].id });
-      }
-
-      return result[0];
+    return addDeviceReading({
+      id: request.params.id,
+      payload: request.payload,
     });
   },
 };

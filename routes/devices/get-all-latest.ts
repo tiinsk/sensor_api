@@ -1,4 +1,4 @@
-import { getAllLatestReadings } from '../../data/devices/latest-reading';
+import { getAllLatestReadings } from '../../data/devices/latest-readings';
 import Joi from 'joi';
 import { ArrayRequestParams } from '../../types';
 

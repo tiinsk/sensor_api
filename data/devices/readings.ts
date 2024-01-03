@@ -123,3 +123,52 @@ export const getDeviceReadings = async (params: {
     };
   });
 };
+
+export const addDeviceReading = async ({
+  id,
+  payload,
+}: {
+  id: string;
+  payload: {
+    temperature?: number;
+    humidity?: number;
+    pressure?: number;
+    lux?: number;
+    battery?: number;
+  };
+}) => {
+  return knex.transaction(async trx => {
+    const device = await trx('device').where('id', id).first();
+
+    if (!device) {
+      return Boom.notFound(`Device with id ${id} not found`);
+    }
+
+    const result = await trx('reading')
+      .insert({
+        device: id,
+        temperature: payload.temperature,
+        humidity: payload.humidity,
+        pressure: payload.pressure,
+        lux: payload.lux,
+        battery: payload.battery,
+      })
+      .returning([
+        'id',
+        'temperature',
+        'humidity',
+        'pressure',
+        'lux',
+        'battery',
+        'created_at',
+      ]);
+
+    if (result[0].id) {
+      await trx('device')
+        .where('id', id)
+        .update({ latest_reading: result[0].id });
+    }
+
+    return result[0];
+  });
+};
