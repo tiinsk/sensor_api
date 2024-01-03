@@ -1,6 +1,6 @@
 import Boom from 'boom';
-import knex from '../../knex/knex';
-import { ArrayRequestParams } from '../../types';
+import knex from '../knex/knex';
+import { ArrayRequestParams } from '../types';
 
 const allLatestReadingFields = [
   'device.id',

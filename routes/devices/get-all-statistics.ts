@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { getAllStatistics } from '../../data/devices/statistics';
+import { getAllStatistics } from '../../data/statistics';
 
 export default {
   method: 'GET',

@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { getAllReadings } from '../../data/devices/readings';
+import { getAllReadings } from '../../data/readings';
 
 export default {
   method: 'GET',

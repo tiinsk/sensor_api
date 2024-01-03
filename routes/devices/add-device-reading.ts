@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import Boom from 'boom';
-import { addDeviceReading } from '../../data/devices/readings';
+import { addDeviceReading } from '../../data/readings';
 
 export default {
   method: 'POST',

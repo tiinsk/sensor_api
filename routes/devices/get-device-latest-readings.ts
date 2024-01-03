@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { getDeviceLatestReading } from '../../data/devices/latest-readings';
+import { getDeviceLatestReading } from '../../data/latest-readings';
 
 export default {
   method: 'GET',

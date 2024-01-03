@@ -1,5 +1,5 @@
-import knex from '../../knex/knex';
-import { ArrayRequestParams } from '../../types';
+import knex from '../knex/knex';
+import { ArrayRequestParams } from '../types';
 import { getAll as getAllDevicesQuery } from './index';
 import Boom from '@hapi/boom';
 import { Knex } from 'knex';
