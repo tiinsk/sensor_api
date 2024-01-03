@@ -5,9 +5,15 @@ import { ArrayRequestParams } from '../types';
 export const allDeviceFields = [
   'device.id',
   'device.name',
-  'device.location_type',
-  'device.sensor_info',
+  'device.location_x',
+  'device.location_y',
 ];
+
+const dataMapper = device => ({
+  id: device.id,
+  name: device.name,
+  location: { x: device.location_x, y: device.location_y },
+});
 
 export const getAll = (trx, device = undefined) => {
   const deviceQuery = trx('device').where('device.disabled', false);
@@ -35,7 +41,7 @@ export const getAllDevices = (params: ArrayRequestParams) => {
       count: results.length,
       totCount: parseInt(totResultCount[0]['count']),
       limit: params.limit,
-      values: results,
+      values: results.map(dataMapper),
     };
   });
 };
@@ -49,6 +55,6 @@ export const getDevice = async deviceId => {
     if (!deviceData) {
       return Boom.notFound(`Device with id ${deviceId} not found`);
     }
-    return deviceData;
+    return dataMapper(deviceData);
   });
 };
