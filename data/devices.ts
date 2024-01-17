@@ -7,16 +7,22 @@ export const allDeviceFields = [
   'device.name',
   'device.location_x',
   'device.location_y',
+  'device.disabled',
 ];
 
 const dataMapper = device => ({
   id: device.id,
   name: device.name,
   location: { x: device.location_x, y: device.location_y },
+  disabled: device.disabled,
 });
 
-export const getAll = (trx, device = undefined) => {
-  const deviceQuery = trx('device').where('device.disabled', false);
+export const getAll = (trx, includeDisabled, device = undefined) => {
+  const deviceQuery = trx('device');
+
+  if (!includeDisabled) {
+    deviceQuery.where('device.disabled', false);
+  }
 
   if (device) {
     deviceQuery.where('device.id', device);
@@ -25,9 +31,11 @@ export const getAll = (trx, device = undefined) => {
   return deviceQuery;
 };
 
-export const getAllDevices = (params: ArrayRequestParams) => {
+export const getAllDevices = (
+  params: ArrayRequestParams & { includeDisabled: boolean }
+) => {
   return knex.transaction(async trx => {
-    const query = getAll(trx, undefined);
+    const query = getAll(trx, params.includeDisabled, undefined);
 
     const totResultCount = await query.clone().count('*');
 
@@ -46,9 +54,9 @@ export const getAllDevices = (params: ArrayRequestParams) => {
   });
 };
 
-export const getDevice = async deviceId => {
+export const getDevice = async (deviceId, includeDisabled = false) => {
   return knex.transaction(async trx => {
-    const deviceData = await getAll(trx, deviceId)
+    const deviceData = await getAll(trx, includeDisabled, deviceId)
       .select(allDeviceFields)
       .first();
 

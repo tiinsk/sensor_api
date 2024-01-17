@@ -10,9 +10,18 @@ export default {
       query: {
         limit: Joi.number().integer().min(1).max(100).default(100),
         offset: Joi.number().integer().min(0).max(100).default(0),
+        includeDisabled: Joi.bool().default(false),
       },
     },
   },
-  handler: async ({ query }: { query: ArrayRequestParams }) =>
-    getAllDevices({ limit: query.limit, offset: query.offset }),
+  handler: async ({
+    query,
+  }: {
+    query: ArrayRequestParams & { includeDisabled: boolean };
+  }) =>
+    getAllDevices({
+      limit: query.limit,
+      offset: query.offset,
+      includeDisabled: query.includeDisabled,
+    }),
 };

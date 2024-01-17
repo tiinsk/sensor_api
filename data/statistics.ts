@@ -62,7 +62,7 @@ export const getAllStatistics = (
   } & ArrayRequestParams
 ) => {
   return knex.transaction(async trx => {
-    const devicesQuery = getAllDevicesQuery(trx);
+    const devicesQuery = getAllDevicesQuery(trx, false);
 
     const totResultCount = await devicesQuery.clone().count('*');
 
