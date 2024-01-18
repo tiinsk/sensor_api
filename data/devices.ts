@@ -8,6 +8,7 @@ export const allDeviceFields = [
   'device.location_x',
   'device.location_y',
   'device.disabled',
+  'device.order',
 ];
 
 const dataMapper = device => ({
@@ -15,6 +16,7 @@ const dataMapper = device => ({
   name: device.name,
   location: { x: device.location_x, y: device.location_y },
   disabled: device.disabled,
+  order: device.order,
 });
 
 export const getAll = (trx, includeDisabled, device = undefined) => {
