@@ -2,6 +2,21 @@ import Boom from 'boom';
 import knex from '../knex/knex';
 import { ArrayRequestParams } from '../types';
 
+export type DeviceType = 'ruuvi' | 'sensorbug';
+export interface DeviceLocation {
+  x: number;
+  y: number;
+}
+
+export interface Device {
+  id: string;
+  order: number;
+  name: string;
+  type: DeviceType;
+  location: DeviceLocation;
+  disabled: boolean;
+}
+
 export const allDeviceFields = [
   'device.id',
   'device.name',
@@ -9,6 +24,7 @@ export const allDeviceFields = [
   'device.location_y',
   'device.disabled',
   'device.order',
+  'device.type',
 ];
 
 const dataMapper = device => ({
@@ -17,6 +33,7 @@ const dataMapper = device => ({
   location: { x: device.location_x, y: device.location_y },
   disabled: device.disabled,
   order: device.order,
+  type: device.type,
 });
 
 export const getAll = (trx, includeDisabled, device = undefined) => {
@@ -66,5 +83,74 @@ export const getDevice = async (deviceId, includeDisabled = false) => {
       return Boom.notFound(`Device with id ${deviceId} not found`);
     }
     return dataMapper(deviceData);
+  });
+};
+
+export const addDevice = async (device: Device) => {
+  return knex.transaction(async trx => {
+    const existingDevice = await trx('device')
+      .where('device.id', device.id)
+      .first();
+
+    if (existingDevice) {
+      return Boom.conflict(`Device with id ${device.id} already exists`);
+    }
+
+    const existingDeviceWithOrder = await trx('device')
+      .where('device.order', device.order)
+      .first();
+
+    if (existingDeviceWithOrder) {
+      return Boom.conflict(`Device with order ${device.order} already exists`);
+    }
+
+    const result = await trx('device')
+      .insert({
+        id: device.id,
+        order: device.order,
+        name: device.name,
+        type: device.type,
+        location_x: device.location.x,
+        location_y: device.location.y,
+        disabled: device.disabled,
+      })
+      .returning(allDeviceFields);
+
+    return dataMapper(result[0]);
+  });
+};
+
+export const updateDevice = async (device: Device) => {
+  return knex.transaction(async trx => {
+    const existingDevice = await trx('device')
+      .where('device.id', device.id)
+      .first();
+
+    if (!existingDevice) {
+      return Boom.conflict(`Device with id ${device.id} doesn't exist`);
+    }
+
+    const existingDeviceWithOrder = await trx('device')
+      .whereNot('device.id', device.id)
+      .andWhere('device.order', device.order)
+      .first();
+
+    if (existingDeviceWithOrder) {
+      return Boom.conflict(`Device with order ${device.order} already exists`);
+    }
+
+    const result = await trx('device')
+      .where({ id: device.id })
+      .update({
+        order: device.order,
+        name: device.name,
+        type: device.type,
+        location_x: device.location.x,
+        location_y: device.location.y,
+        disabled: device.disabled,
+      })
+      .returning(allDeviceFields);
+
+    return dataMapper(result[0]);
   });
 };
