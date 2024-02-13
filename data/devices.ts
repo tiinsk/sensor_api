@@ -3,9 +3,12 @@ import knex from '../knex/knex';
 import { ArrayRequestParams } from '../types';
 
 export type DeviceType = 'ruuvi' | 'sensorbug';
+export type LocationType = 'inside' | 'outside' | null;
+
 export interface DeviceLocation {
   x: number;
   y: number;
+  type: LocationType;
 }
 
 export interface Device {
@@ -25,12 +28,17 @@ export const allDeviceFields = [
   'device.disabled',
   'device.order',
   'device.type',
+  'device.location_type',
 ];
 
 const dataMapper = device => ({
   id: device.id,
   name: device.name,
-  location: { x: device.location_x, y: device.location_y },
+  location: {
+    x: device.location_x,
+    y: device.location_y,
+    type: device.location_type,
+  },
   disabled: device.disabled,
   order: device.order,
   type: device.type,
@@ -112,6 +120,7 @@ export const addDevice = async (device: Device) => {
         type: device.type,
         location_x: device.location.x,
         location_y: device.location.y,
+        location_type: device.location.type,
         disabled: device.disabled,
       })
       .returning(allDeviceFields);
@@ -147,6 +156,7 @@ export const updateDevice = async (device: Device) => {
         type: device.type,
         location_x: device.location.x,
         location_y: device.location.y,
+        location_type: device.location.type,
         disabled: device.disabled,
       })
       .returning(allDeviceFields);

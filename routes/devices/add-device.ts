@@ -15,6 +15,10 @@ export default {
           .keys({
             x: Joi.number().required(),
             y: Joi.number().required(),
+            type: Joi.string()
+              .allow(null)
+              .valid('inside', 'outside')
+              .required(),
           })
           .required(),
         disabled: Joi.bool().default(true),
