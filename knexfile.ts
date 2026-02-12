@@ -1,7 +1,7 @@
-const path = require('path');
-const config = require('./config');
+import type { Knex } from 'knex';
+import config from './config.js';
 
-module.exports = {
+const knexConfig: { [key: string]: Knex.Config } = {
   development: {
     client: 'postgresql',
     connection: config.database.development,
@@ -10,10 +10,11 @@ module.exports = {
       max: 10,
     },
     migrations: {
-      directory: path.join(__dirname, '/knex/migrations'),
+      directory: './knex/migrations',
     },
     seeds: {
-      directory: path.join(__dirname, '/knex/seeds'),
+      directory: './knex/seeds',
+      loadExtensions: ['.ts'],
     },
   },
   production: {
@@ -25,10 +26,12 @@ module.exports = {
     },
     migrations: {
       tableName: 'knex_migrations',
-      directory: path.join(__dirname, '/knex/migrations'),
+      directory: './knex/migrations',
     },
     seeds: {
-      directory: path.join(__dirname, '/knex/seeds'),
+      directory: './knex/seeds',
     },
   },
 };
+
+module.exports = knexConfig;

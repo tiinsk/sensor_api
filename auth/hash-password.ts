@@ -8,9 +8,12 @@ export const genRandomString = length => {
 };
 
 export const sha512 = (password, salt) => {
-  var hash = crypto.createHmac('sha512', salt); /** Hashing algorithm sha512 */
+  const hash = crypto.createHmac(
+    'sha512',
+    salt
+  ); /** Hashing algorithm sha512 */
   hash.update(password);
-  var passwordHash = hash.digest('hex');
+  const passwordHash = hash.digest('hex');
   return {
     salt,
     passwordHash,
@@ -18,6 +21,6 @@ export const sha512 = (password, salt) => {
 };
 
 export const saltHashPassword = password => {
-  var salt = genRandomString(16); /** Gives us salt of length 16 */
+  const salt = genRandomString(16); /** Gives us salt of length 16 */
   return sha512(password, salt);
 };
