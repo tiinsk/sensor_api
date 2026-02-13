@@ -10,12 +10,12 @@ module.exports = {
     'auth/**/*.ts',
     '!**/*.d.ts',
   ],
-  globals: {
-    'ts-jest': {
+  transform: {
+    '^.+\\.ts$': ['ts-jest', {
       tsconfig: {
         esModuleInterop: true,
         allowSyntheticDefaultImports: true,
       },
-    },
+    }],
   },
 };
