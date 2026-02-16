@@ -25,7 +25,7 @@ export default {
           .single()
           .required(),
         level: Joi.string()
-          .valid('10 minutes', '30 minutes', 'day', 'week', 'month')
+          .valid('30 minutes', 'day', 'week', 'month')
           .required(),
       },
     },

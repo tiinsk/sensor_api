@@ -44,9 +44,7 @@ const getAll = (
     `date_bin('30 minutes', created_at, '2000-01-01') as time`
   );
 
-  const selector = ['30 minutes', '10 minutes'].includes(params.level)
-    ? rawBin
-    : rawTrunc;
+  const selector = ['30 minutes'].includes(params.level) ? rawBin : rawTrunc;
 
   const query = trx('reading')
     .select([selector])
@@ -107,7 +105,11 @@ export const getDeviceReadings = async (params: {
   deviceId: string;
 }) => {
   return knex.transaction(async trx => {
-    const deviceResult = await getAllDevicesQuery(trx, params.deviceId).first();
+    const deviceResult = await getAllDevicesQuery(
+      trx,
+      false,
+      params.deviceId
+    ).first();
 
     if (!deviceResult) {
       return Boom.notFound(`Device with id ${params.deviceId} not found`);
