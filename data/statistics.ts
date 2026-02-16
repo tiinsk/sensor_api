@@ -101,7 +101,11 @@ export const getDeviceStatistics = async (params: {
   deviceId: string;
 }) => {
   return knex.transaction(async trx => {
-    const deviceResult = await getAllDevicesQuery(trx, params.deviceId).first();
+    const deviceResult = await getAllDevicesQuery(
+      trx,
+      false,
+      params.deviceId
+    ).first();
 
     if (!deviceResult) {
       return Boom.notFound(`Device with id ${params.deviceId} not found`);

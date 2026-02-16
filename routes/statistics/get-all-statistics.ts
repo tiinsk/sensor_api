@@ -9,8 +9,8 @@ export default {
       query: {
         limit: Joi.number().integer().min(1).max(500).default(100),
         offset: Joi.number().integer().min(0).default(0),
-        startTime: Joi.date(),
-        endTime: Joi.date(),
+        startTime: Joi.date().required(),
+        endTime: Joi.date().required(),
       },
     },
   },

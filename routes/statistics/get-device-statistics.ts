@@ -10,8 +10,8 @@ export default {
         id: Joi.string().required(),
       },
       query: {
-        startTime: Joi.date(),
-        endTime: Joi.date(),
+        startTime: Joi.date().required(),
+        endTime: Joi.date().required(),
       },
     },
   },
