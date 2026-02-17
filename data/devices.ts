@@ -136,7 +136,7 @@ export const updateDevice = async (device: Device) => {
       .first();
 
     if (!existingDevice) {
-      return Boom.conflict(`Device with id ${device.id} doesn't exist`);
+      return Boom.notFound(`Device with id ${device.id} doesn't exist`);
     }
 
     const existingDeviceWithOrder = await trx('device')
