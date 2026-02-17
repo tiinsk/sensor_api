@@ -20,11 +20,6 @@ export default {
     },
   },
   handler: request => {
-    if (request.auth.credentials.device !== request.params.id) {
-      return Boom.conflict(
-        `Device can add records to only itself (JWT device (${request.auth.credentials.device}) does not match parameter id (${request.params.id}))`
-      );
-    }
     return addDeviceReading({
       id: request.params.id,
       payload: request.payload,

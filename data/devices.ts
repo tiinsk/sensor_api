@@ -164,3 +164,27 @@ export const updateDevice = async (device: Device) => {
     return dataMapper(result[0]);
   });
 };
+
+export const deleteDevice = async (deviceId: string) => {
+  return knex.transaction(async trx => {
+    // Check if device exists
+    const existingDevice = await trx('device').where({ id: deviceId }).first();
+
+    if (!existingDevice) {
+      return Boom.notFound(`Device with id ${deviceId} not found`);
+    }
+
+    // Delete reference to the latest device reading so that all device readings can be removed
+    await trx('device').where({ id: deviceId }).update({
+      latest_reading: null,
+    });
+
+    // Delete all readings for this device (CASCADE)
+    await trx('reading').where('device', deviceId).del();
+
+    // Delete the device
+    await trx('device').where({ id: deviceId }).del();
+
+    return { message: 'Device deleted successfully' };
+  });
+};
